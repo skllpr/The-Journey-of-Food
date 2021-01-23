@@ -1,0 +1,22 @@
+{
+  "name": "foodcestory-gators",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skllpr/foodcestory-gators.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skllpr/foodcestory-gators/issues"
+  },
+  "homepage": "https://github.com/skllpr/foodcestory-gators#readme",
+  "dependencies": {
+    "qr-scanner": "^1.2.0"
+  }
+}

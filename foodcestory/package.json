@@ -1,0 +1,22 @@
+{
+    "version": "1.0.0",
+    "name": "foodcestory",
+    "app-name": "foodcestory",
+    "package-name": "static_app",
+    "project-type": "static",
+    "icon": "./assets/icon/icon.png",
+    "dist-path": "./dist",
+    "permission": [
+        "android.permission.INTERNET"
+    ],
+    "description": "",
+    "author": "",
+    "license": "ISC",
+    "scripts": {
+        "build": "androidjs build"
+    },
+    "project-name": "foodcestory",
+    "theme": {
+        "fullScreen": true
+    }
+}
