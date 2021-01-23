@@ -32,6 +32,15 @@ def find_fruit(conn, id):
         print(f"Found fruit at {time.asctime()}:")
         for row in rows:
             print(row)
+        return rows;
+def insert_fruit(conn, id, origin1):
+    with conn.cursor() as cur:
+        cur.execute("INSERT INTO produce VALUES ("+id+",ARRAY['"+origin1+"'],ARRAY[])")
+
+def insert_additional_origin(conn, id, origin2):
+    with conn.cursor() as cur:
+        cur.execute("INSERT INTO produce VALUES ("+id+",ARRAY['"+origin1+"'],ARRAY[])")
+
 def main():
     opt = parse_cmdline()
     logging.basicConfig(level=logging.DEBUG if opt.verbose else logging.INFO)
