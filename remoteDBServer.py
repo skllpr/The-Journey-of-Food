@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, jsonify
+from flask_cors import CORS
 import time
 import random
 import logging
@@ -92,14 +93,14 @@ def parse_cmdline():
     return opt
 
 app = Flask(__name__)
-
+CORS(app)
 @app.route('/getData/<id>')
 def getData(id):
     opt = parse_cmdline()
     logging.basicConfig(level=logging.DEBUG if opt.verbose else logging.INFO)
     conn = psycopg2.connect(opt.dsn)
     rows = find_fruit(conn, id)
-    return str(rows)
+    return jsonify(data=rows)
 
 @app.route('/newFruit/<id>/<fruit>/<origin>')
 def newFruit(id, fruit, origin):
@@ -109,7 +110,7 @@ def newFruit(id, fruit, origin):
     logging.basicConfig(level=logging.DEBUG if opt.verbose else logging.INFO)
     conn = psycopg2.connect(opt.dsn)
     insert_fruit(conn, id, fruit, origin)
-    return str(find_fruit(conn, id))
+    return jsonify(data=find_fruit(conn, id))
 
 @app.route('/newOrigin/<id>/<origin>')
 def newOrigin(id, origin):
@@ -118,7 +119,7 @@ def newOrigin(id, origin):
     logging.basicConfig(level=logging.DEBUG if opt.verbose else logging.INFO)
     conn = psycopg2.connect(opt.dsn)
     insert_additional_origin(conn, id, origin)
-    return str(find_fruit(conn, id))
+    return jsonify(data=find_fruit(conn, id))
 
 @app.route('/newProcessing/<id>/<processing>')
 def newProcessing(id, processing):
@@ -127,7 +128,7 @@ def newProcessing(id, processing):
     logging.basicConfig(level=logging.DEBUG if opt.verbose else logging.INFO)
     conn = psycopg2.connect(opt.dsn)
     insert_additional_processing(conn, id, processing)
-    return str(find_fruit(conn, id))
+    return jsonify(data=find_fruit(conn, id))
 
 if __name__ == "__main__":
     main()
