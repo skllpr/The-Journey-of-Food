@@ -25,16 +25,7 @@
       </div>
     </div>
     <script type="text/javascript">
-      Radar.initialize("prj_test_pk_0234be44c8d7f10ca09b8825f23138c850ca2b36");
-      Radar.ipGeocode(function(err,result){
-        if(err){
-          console.error(err);
-        }
-        if(result && result.address){
-          console.log(result.address);
-          document.getElementById("country").innerHTML = "Your city is " + result.address.city;
-        }
-      });
+      
     </script>
     <script src="./processor.js"></script>
   </body>
