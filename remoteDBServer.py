@@ -1,3 +1,4 @@
+from flask import Flask
 import time
 import random
 import logging
@@ -35,7 +36,7 @@ def find_fruit(conn, id):
         return rows;
 def insert_fruit(conn, id, fruit, origin1):
     with conn.cursor() as cur:
-        cur.execute("INSERT INTO produce VALUES ("+id+","+fruit+",ARRAY['"+origin1+"'],ARRAY[])")
+        cur.execute("INSERT INTO produce VALUES ("+id+",'"+fruit+"',ARRAY['"+origin1+"'],ARRAY[])")
         cur.execute("SELECT * FROM produce WHERE id="+id)
         logging.debug("print_balances(): status message: %s", cur.statusmessage)
         rows = cur.fetchall()
@@ -60,16 +61,23 @@ def insert_additional_processing(conn, id, processing2):
         cur.execute("SELECT * FROM produce WHERE id="+id)
         rows = cur.fetchall()
         print(rows)
-
+def clear_table(conn):
+    with conn.cursor() as cur:
+        cur.execute(
+            "CREATE TABLE IF NOT EXISTS produce (id INT PRIMARY KEY, food STRING, origin STRING[], processing STRING[])"
+        )
+        cur.execute("DELETE FROM produce")
+        cur.execute(
+            "CREATE TABLE IF NOT EXISTS produce (id INT PRIMARY KEY, food STRING, origin STRING[], processing STRING[])"
+        )
 def main():
     opt = parse_cmdline()
     logging.basicConfig(level=logging.DEBUG if opt.verbose else logging.INFO)
 
     conn = psycopg2.connect(opt.dsn)
+    clear_table(conn)
     initialize_fruits(conn)
     print_all_fruits(conn)
-    find_fruit(conn, '12345')
-    insert_additional_origin(conn, '12345', 'Wakanda')
 
 def parse_cmdline():
     parser = ArgumentParser(description=__doc__,
@@ -83,6 +91,44 @@ def parse_cmdline():
     opt = parser.parse_args()
     return opt
 
+app = Flask(__name__)
+
+@app.route('/getData/<id>')
+def getData(id):
+    opt = parse_cmdline()
+    logging.basicConfig(level=logging.DEBUG if opt.verbose else logging.INFO)
+    conn = psycopg2.connect(opt.dsn)
+    rows = find_fruit(conn, id)
+    return str(rows)
+
+@app.route('/newFruit/<id>/<fruit>/<origin>')
+def newFruit(id, fruit, origin):
+    fruit = fruit.replace('*', " ")
+    origin = origin.replace('*', " ")
+    opt = parse_cmdline()
+    logging.basicConfig(level=logging.DEBUG if opt.verbose else logging.INFO)
+    conn = psycopg2.connect(opt.dsn)
+    insert_fruit(conn, id, fruit, origin)
+    return str(find_fruit(conn, id))
+
+@app.route('/newOrigin/<id>/<origin>')
+def newOrigin(id, origin):
+    origin.replace('*', " ")
+    opt = parse_cmdline()
+    logging.basicConfig(level=logging.DEBUG if opt.verbose else logging.INFO)
+    conn = psycopg2.connect(opt.dsn)
+    insert_additional_origin(conn, id, origin)
+    return str(find_fruit(conn, id))
+
+@app.route('/newProcessing/<id>/<processing>')
+def newProcessing(id, processing):
+    processing.replace('*', " ")
+    opt = parse_cmdline()
+    logging.basicConfig(level=logging.DEBUG if opt.verbose else logging.INFO)
+    conn = psycopg2.connect(opt.dsn)
+    insert_additional_processing(conn, id, processing)
+    return str(find_fruit(conn, id))
 
 if __name__ == "__main__":
     main()
+    app.run()
