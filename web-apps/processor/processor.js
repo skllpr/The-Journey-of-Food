@@ -12,7 +12,8 @@ let scanning = false;
 
 qrcode.callback = res => {
   if (res) {
-    outputData.innerText = res;
+    const productId = res
+    outputData.innerText = productId;
     scanning = false;
 
     video.srcObject.getTracks().forEach(track => {
@@ -22,12 +23,33 @@ qrcode.callback = res => {
     qrResult.hidden = false;
     canvasElement.hidden = true;
     btnScanQR.hidden = false;
-    console.log(res)
-    const url = `https://shy-mayfly-0.loca.lt/getData/${res}`
+    console.log(productId)
+    const dbUrl = `https://ancient-fireant-72.loca.lt/`
+    const url = dbUrl + `getData/${productId}`
     console.log(url)
     fetch(url).then(res => res.json())
     .then(res => {
-        console.log(res.data)
+      console.log(res.data)
+      if(res.data !== []) {
+        Radar.initialize("prj_test_pk_0234be44c8d7f10ca09b8825f23138c850ca2b36");
+        Radar.ipGeocode(function(err, result){
+          if(result && result.address){
+            console.log(result.address);
+            let city = result.address.city
+            city = city.replace(/ /g, '*')
+            let state = result.address.state
+            state = state.replace(/ /g, '*')
+            console.log(city, state)
+
+            const processingUrl = dbUrl + `newProcessing/${productId}/${city},*${state}`
+            console.log(processingUrl)
+            fetch(processingUrl).then(res => res.json())
+            .then(res => {
+              console.log(res.data)
+            })
+          }
+        });
+      }
     })
   }
 };
