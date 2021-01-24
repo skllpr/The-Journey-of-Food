@@ -1,0 +1,59 @@
+/* CSS files add styling rules to your content */
+
+body {
+    background-image: url('https://media1.giphy.com/media/L4ThVsVP1GHGeIdUUA/source.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: helvetica, arial, sans-serif;
+    margin: 2em;
+  }
+  
+  h1 {
+    font-style: italic;
+    color: #373fff;
+  }
+  
+  .titleBox{
+    position: relative;
+    width: 100vw;
+    height: 25%;
+    animation-name: initAnimLogo;
+    animation-duration: 3s;
+  }
+  .logo{
+    width: 40vw;
+    margin-left: 30vw;
+    margin-right: 30vw;
+  }
+  
+  .infoPanel {
+    border-radius: 25px;
+    background: #73AD21;  
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 50vw;
+    position: relative;
+    animation-name: initAnim;
+    animation-duration: 3s;
+    opacity: 0.8;
+  }
+  
+  @keyframes initAnim{
+    0%    {left:100vw;}
+    100%  {left: 0vw;}
+  }
+  
+  @keyframes initAnimLogo{
+    0%    {bottom:100vw;}
+    100%  {bottom: 0vw;}
+  }
+  
+  #qr-canvas {
+    margin-left: auto;
+    margin-right: auto;
+        display: block;
+  
+  }

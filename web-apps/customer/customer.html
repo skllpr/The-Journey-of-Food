@@ -1,26 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>QR Code Scanner</title>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
     <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/qr_packed.js"></script>
+    <title>FoodStory</title>
+    <script src="https://js.radar.io/v3/radar.min.js"></script>
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- import the webpage's javascript file -->
+<!--     <script src="./qrCodeScanner.js"></script> -->
   </head>
-
   <body>
-    <div id="container">
 
-      <a id="btn-scan-qr">
-        <img style="width:100px; height:100px;" src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg">
+  <div class="titleBox">
+    <a id="btn-scan-qr">
+    <img class = "logo" src="https://cdn.glitch.com/d242e024-48bd-4957-abbe-726e8ba22114%2FLogo.png?v=1611453594039" alt="logo">
       </a>
+  </div>
+
+  <div class="infoPanel">
+    Click on the logo to view your food's history!
+  </div>
+
+<!--       <a id="btn-scan-qr">
+       <img style="width:100px; height:100px;" src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg">
+             <button type="button">Click Me!</button>
+      </a> -->
 
       <canvas hidden="" id="qr-canvas"></canvas>
 
       <div id="qr-result" hidden="">
         <b>Data:</b> <span id="outputData"></span>
       </div>
-    </div>
 
-    <script src="../scanner/qrCodeScanner.js"></script>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+    <script src="./customer.js"></script>
+
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
   </body>
 </html>
