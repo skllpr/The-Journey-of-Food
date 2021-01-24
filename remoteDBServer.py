@@ -33,13 +33,33 @@ def find_fruit(conn, id):
         for row in rows:
             print(row)
         return rows;
-def insert_fruit(conn, id, origin1):
+def insert_fruit(conn, id, fruit, origin1):
     with conn.cursor() as cur:
-        cur.execute("INSERT INTO produce VALUES ("+id+",ARRAY['"+origin1+"'],ARRAY[])")
+        cur.execute("INSERT INTO produce VALUES ("+id+","+fruit+",ARRAY['"+origin1+"'],ARRAY[])")
+        cur.execute("SELECT * FROM produce WHERE id="+id)
+        logging.debug("print_balances(): status message: %s", cur.statusmessage)
+        rows = cur.fetchall()
+
 
 def insert_additional_origin(conn, id, origin2):
     with conn.cursor() as cur:
-        cur.execute("INSERT INTO produce VALUES ("+id+",ARRAY['"+origin1+"'],ARRAY[])")
+        cur.execute("SELECT * FROM produce WHERE id="+id)
+        rows = cur.fetchall()
+        rows[0][2].append(origin2)
+        cur.execute("UPDATE produce SET origin =ARRAY" +str(rows[0][2]) + "WHERE id="+id)
+        cur.execute("SELECT * FROM produce WHERE id="+id)
+        rows = cur.fetchall()
+        print(rows)
+
+def insert_additional_processing(conn, id, processing2):
+    with conn.cursor() as cur:
+        cur.execute("SELECT * FROM produce WHERE id="+id)
+        rows = cur.fetchall()
+        rows[0][3].append(processing2)
+        cur.execute("UPDATE produce SET processing =ARRAY" +str(rows[0][3]) + "WHERE id="+id)
+        cur.execute("SELECT * FROM produce WHERE id="+id)
+        rows = cur.fetchall()
+        print(rows)
 
 def main():
     opt = parse_cmdline()
@@ -49,6 +69,7 @@ def main():
     initialize_fruits(conn)
     print_all_fruits(conn)
     find_fruit(conn, '12345')
+    insert_additional_origin(conn, '12345', 'Wakanda')
 
 def parse_cmdline():
     parser = ArgumentParser(description=__doc__,
