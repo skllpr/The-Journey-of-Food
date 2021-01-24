@@ -5,9 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
     <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/qr_packed.js"></script>
+    <script src="https://js.radar.io/v3/radar.min.js"></script>
   </head>
 
   <body>
+    <div id="country">
+        Loading...
+    </div>
     <div id="container">
 
       <a id="btn-scan-qr">
@@ -20,7 +24,19 @@
         <b>Data:</b> <span id="outputData"></span>
       </div>
     </div>
-
-    <script src="../scanner/qrCodeScanner.js"></script>
+    <script type="text/javascript">
+      Radar.initialize("prj_test_pk_0234be44c8d7f10ca09b8825f23138c850ca2b36");
+      Radar.ipGeocode(function(err,result){
+        if(err){
+          console.error(err);
+        }
+        if(result && result.address){
+          console.log(result.address);
+          document.getElementById("country").innerHTML = "Your city is " + result.address.city;
+        }
+      });
+    </script>
+    <script src="./processor.js"></script>
   </body>
 </html>
+ 
